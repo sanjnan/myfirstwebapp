@@ -1,5 +1,8 @@
 from flask import Flask, render_template, jsonify, request
 #from werkzeug.wrappers import Request, Response
+import re
+#import json
+#from pprint import pprint
 
 app =Flask(__name__)
 
@@ -46,7 +49,7 @@ def plot():
 def home():
     return render_template("home.html")
 
-@app.route('/get/',methods=["GET"])
+@app.route('/ome/',methods=["GET"])
 def geti():
     resp = {"username": "kkk"}
     return jsonify(resp)
@@ -54,11 +57,32 @@ def geti():
 @app.route('/ost/',methods=["POST"])
 def posti():
     responseId = request.json["responseId"]
+    req = request.json
+    for header in req:
+        if header == "queryResult":
+            for item in req[header]:
+                if item == "intent":
+                    for option in req[header][item]:
+                        if option == "displayName":
+                            if req[header][item][option] == "SharingMobile":
+                                for itm in req[header]:
+                                    if itm == "parameters":
+                                        for para in req[header][itm]:
+                                            if para == "mobilenumber":
+                                                p = re.compile(r'^[6789]\d{9}$',re.I|re.M)
+                                                print (req[header][itm][para])
+                                                if p.match(str(req[header][itm][para])):
+                                                    respo = {"fulfillmentText": "Please enter the OTP received","fulfillmentMessages": [],"source": "example.com","payload": {},"outputContexts": [ ],"followupEventInput": {}}
+                                                    return jsonify(respo)
+                                                else:
+                                                    respo = {"fulfillmentText": "Please enter a valid 10 digit mobile","fulfillmentMessages": [],"source": "example.com","payload": {},"outputContexts": [ ],"followupEventInput": {}}
+                                                    return jsonify(respo)
+                            respo = {"fulfillmentText": "","fulfillmentMessages": [],"source": "example.com","payload": {},"outputContexts": [ ],"followupEventInput": {}}
+                            return jsonify(respo)
     #session = request.json["session"]
     #querytext = request.json["querytext"]
     #mobilenumber = request.json["mobilenumber"]
-    respo = {"fulfillmentText": "This is the response","fulfillmentMessages": [],"source": "example.com","payload": {},"outputContexts": [ ],"followupEventInput": {}}
-    return jsonify(respo)
+
 
 @app.route('/about/')
 def about():
