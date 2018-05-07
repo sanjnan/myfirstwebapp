@@ -7,13 +7,10 @@ gunicorn==19.8.1
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.10
-lxml==4.2.1
 MarkupSafe==1.0
 numpy==1.14.3
-packaging==17.1
 pandas==0.22.0
 pandas-datareader==0.6.0
-pyparsing==2.2.0
 python-dateutil==2.7.2
 pytz==2018.4
 PyYAML==3.12
@@ -24,5 +21,3 @@ six==1.11.0
 tornado==5.0.2
 urllib3==1.22
 Werkzeug==0.14.1
-wincertstore==0.2
-wrapt==1.10.11
